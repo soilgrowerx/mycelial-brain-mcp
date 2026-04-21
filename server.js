@@ -99,7 +99,7 @@ app.post('/mcp', async (req, res) => {
       }
       if (name === 'brain_list') {
         const [files] = await storage.bucket(BUCKET).getFiles({ prefix: PREFIX });
-        const docs = await Promise.all(files.slice(0, 50).map(async f => { const [c] = await f.download(); return JSON.parse(c); }));
+        const docs = await Promise.all(files.map(async f => { const [c] = await f.download(); return JSON.parse(c); }));
         return res.json({ jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: JSON.stringify(docs.map(d => ({ path: d.path, tags: d.tags }))) }]}});
       }
     }
